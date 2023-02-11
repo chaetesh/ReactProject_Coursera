@@ -1,26 +1,29 @@
 import React, { Component } from "react";
 import "./App.css";
 import Menu from "./components/Menu";
-import { DISHES } from "./shared/dishes";
 import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import Contact from "./components/ContactUs";
-import { COMMENTS } from "./shared/comments";
-import { PROMOTIONS } from "./shared/promotions";
-import { LEADERS } from "./shared/leaders";
 import DishdetailComponent from "./components/DishdetailComponent";
 import About from "./components/AboutUs";
+import { connect } from "react-redux";
+
+// Maps state of redux to this components props
+function mapStateToProps(state){
+  return{
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders,
+  }
+}
 
 export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dishes: DISHES,
-      commnets: COMMENTS,
-      promotions: PROMOTIONS,
-      leaders: LEADERS,
       email:"",
       password:""
     };
@@ -36,15 +39,6 @@ export class App extends Component {
       [name]: value,
     });
   }
-
-  DishWithId = () => {
-    return (
-      <DishdetailComponent
-        dish={this.state.dishes.filter((dish) => dish.id === 0)[0]}
-        comments={this.state.commnets.filter((comment) => comment.dishId === 0)}
-      ></DishdetailComponent>
-    );
-  };
 
   render() {
     return (
@@ -120,7 +114,7 @@ export class App extends Component {
                 <div className="d-flex mx-5">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn text-white"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                   >
@@ -129,7 +123,7 @@ export class App extends Component {
                   <div
                     className="modal fade text-black"
                     id="exampleModal"
-                    tabindex="-1"
+                    tabIndex="-1"
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
                   >
@@ -151,16 +145,16 @@ export class App extends Component {
                         </div>
                         <div className="modal-body">
                           <form>
-                            <div class="mb-3">
+                            <div className="mb-3">
                               <label
-                                for="exampleInputEmail1"
-                                class="form-label"
+                                htmlFor="exampleInputEmail1"
+                                className="form-label"
                               >
                                 Email address
                               </label>
                               <input
                                 type="email"
-                                class="form-control"
+                                className="form-control"
                                 id="email"
                                 name="email"
                                 value={this.state.email}
@@ -168,16 +162,16 @@ export class App extends Component {
                                 aria-describedby="emailHelp"
                               />
                             </div>
-                            <div class="mb-3">
+                            <div className="mb-3">
                               <label
-                                for="exampleInputPassword1"
-                                class="form-label"
+                                htmlFor="exampleInputPassword1"
+                                className="form-label"
                               >
                                 Password
                               </label>
                               <input
                                 type="password"
-                                class="form-control"
+                                className="form-control"
                                 id="password"
                                 name="password"
                                 value={this.state.password}
@@ -214,12 +208,12 @@ export class App extends Component {
               j
               element={
                 <Home
-                  dish={this.state.dishes.filter((dish) => dish.featured)[0]}
+                  dish={this.props.dishes.filter((dish) => dish.featured)[0]}
                   promotion={
-                    this.state.promotions.filter((promo) => promo.featured)[0]
+                    this.props.promotions.filter((promo) => promo.featured)[0]
                   }
                   leader={
-                    this.state.leaders.filter((leader) => leader.featured)[0]
+                    this.props.leaders.filter((leader) => leader.featured)[0]
                   }
                 ></Home>
               }
@@ -227,9 +221,8 @@ export class App extends Component {
             <Route
               exact
               path="/menu"
-              element={<Menu dishes={this.state.dishes}></Menu>}
+              element={<Menu dishes={this.props.dishes}></Menu>}
             ></Route>
-            <Route path="/menu/:dishId" element={this.DishWithId()}></Route>
             <Route
               exact
               path="/contactus"
@@ -238,7 +231,7 @@ export class App extends Component {
             <Route
               exact
               path="/aboutus"
-              element={<About leaders={this.state.leaders}></About>}
+              element={<About leaders={this.props.leaders}></About>}
             ></Route>
           </Routes>
 
@@ -249,4 +242,4 @@ export class App extends Component {
   }
 }
 
-export default App;
+export default (connect(mapStateToProps)(App));

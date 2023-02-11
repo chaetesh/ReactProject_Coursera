@@ -1,42 +1,19 @@
 import React, { Component } from "react";
+import { Control } from "react-redux-form";
 import { Form } from "react-router-dom";
 import { Label, FormGroup } from "reactstrap";
-import { Col } from "reactstrap";
-import { Input } from "reactstrap";
-import { Button } from "reactstrap";
+import { LocalForm } from "react-redux-form";
 
 export class ContactUs extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      firstname: "",
-      lastname: "",
-      telnum: "",
-      email: "",
-      agree: false,
-      contactType: "Tel.",
-      message: "",
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleSubmit(event) {
-    console.log("Current State is: " + JSON.stringify(this.state));
-    alert("Current State is: " + JSON.stringify(this.state));
-    event.preventDefault();
+  handleSubmit(values) {
+    console.log("Current State is: " + JSON.stringify(values));
+    alert("Current State is: " + JSON.stringify(values));
   }
 
   render() {
@@ -95,22 +72,20 @@ export class ContactUs extends Component {
             <h3>Send us your Feedback</h3>
           </div>
           <div className="col-12 col-md-9">
-            <form
+            <LocalForm
               className="needs-validation"
-              novalidate
-              onSubmit={this.handleSubmit}
+              noValidate
+              onSubmit={(values) => this.handleSubmit(values)}
             >
               <div>
                 <div>
-                  <label for="firstname" className="form-label">First name</label>
-                  <input
+                  <label htmlFor="firstname" className="form-label">First name</label>
+                  <Control.text
+                    model=".firstname"
                     className="form-control"
-                    type="text"
                     id="firstname"
                     name="firstname"
                     placeholder="First Name"
-                    value={this.state.firstname}
-                    onChange={this.handleInputChange}
                     required
                   />
                   <div className="invalid-feedback">
@@ -118,44 +93,38 @@ export class ContactUs extends Component {
                   </div>
                 </div>
                 <div className="my-3">
-                  <label for="validationTooltip02">Last name</label>
-                  <input
+                  <label htmlFor="validationTooltip02">Last name</label>
+                  <Control.text
+                    model=".lastname"
                     className="form-control"
-                    type="text"
                     id="lastname"
                     name="lastname"
                     placeholder="Last Name"
-                    value={this.state.lastname}
-                    onChange={this.handleInputChange}
                     required
                   />
                   <div className="valid-tooltip">Looks good!</div>
                 </div>
                 <div className="my-3">
-                  <label for="exampleInputEmail1" className="form-label">
+                  <label htmlFor="exampleInputEmail1" className="form-label">
                     Email address
                   </label>
-                  <input
-                    type="email"
+                  <Control.text
+                    model=".email"
                     className="form-control"
                     id="email"
                     name="email"
                     placeholder="Email"
-                    aria-describedby="emailHelp"
-                    value={this.state.email}
-                    onChange={this.handleInputChange}
                     required
                   />
                 </div>
                 <div className="my-3">
                   <Label htmlFor="telnum">Telephone</Label>
-                  <Input
-                    type="tel"
+                  <Control.text
+                    model=".telnum"
+                    className="form-control"
                     id="telnum"
                     name="telnum"
                     placeholder="Tel. number"
-                    value={this.state.telnum}
-                    onChange={this.handleInputChange}
                     required
                   />
                 </div>
@@ -163,21 +132,20 @@ export class ContactUs extends Component {
               <div className="form-row">
                 <div className="col-md-3 mb-3">
                   <Label htmlFor="message">Your Feedback</Label>
-                  <Input
-                    type="textarea"
+                  <Control.textarea
+                    className="form-control"
+                    model=".message"
                     id="message"
                     name="message"
                     rows="12"
-                    value={this.state.message}
-                    onChange={this.handleInputChange}
                     required
-                  ></Input>
+                  ></Control.textarea>
                 </div>
               </div>
               <button className="btn btn-primary" type="submit">
                 Submit form
               </button>
-            </form>
+            </LocalForm>
           </div>
         </div>
       </>

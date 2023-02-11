@@ -3,11 +3,11 @@ import React from "react";
 function RenderCard({ item }) {
   return (
     <div className="col-sm-4">
-    <div class="card" style={{ width: "25rem" }}>
-      <img src={item.image} class="card-img-top" alt="..." />
-      <div class="card-body">
-        {item.designation ? <h5 class="card-text">{item.designation}</h5> : ""}
-        <p class="card-text">{item.description}</p>
+    <div className="card" style={{ width: "25rem" }}>
+      <img src={item.image} className="card-img-top" alt="..." />
+      <div className="card-body">
+        {item.designation ? <h5 className="card-text">{item.designation}</h5> : ""}
+        <p className="card-text">{item.description}</p>
       </div>
     </div>
     </div>
